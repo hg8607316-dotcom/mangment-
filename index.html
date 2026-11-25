@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hospital Management System</title>
+<style>
+:root{--ink:#10263b;--mute:#586a7d;--line:#d9e2ec;--bg:#f2f5f9;--card:#fff;--navy:#0c2d4a;--btn:#0f766e;--teal:#0f766e;--tint:#e1f1ef;--blue:#1e6aa3;--warn:#8a4b08;--wbg:#fdf0d5;--bad:#a32525;--bbg:#fbe3e3;--ok:#0b6b49;--obg:#d9f2e6;--gbg:#e6ecf2;--shadow:0 1px 2px rgba(12,45,74,.06),0 8px 20px rgba(12,45,74,.06);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#e4ecf4;--mute:#9db0c3;--line:#264058;--bg:#0b1824;--card:#112638;--navy:#0a2238;--teal:#5eead4;--tint:#11403c;--blue:#7cc0ee;--warn:#fcd34d;--wbg:#4a3a0e;--bad:#fca5a5;--bbg:#4c1d1d;--ok:#6ee7b7;--obg:#0f3d30;--gbg:#1c3349;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 20px rgba(0,0,0,.3)}}
+:root[data-theme="dark"]{--ink:#e4ecf4;--mute:#9db0c3;--line:#264058;--bg:#0b1824;--card:#112638;--navy:#0a2238;--teal:#5eead4;--tint:#11403c;--blue:#7cc0ee;--warn:#fcd34d;--wbg:#4a3a0e;--bad:#fca5a5;--bbg:#4c1d1d;--ok:#6ee7b7;--obg:#0f3d30;--gbg:#1c3349;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 20px rgba(0,0,0,.3)}
+*{box-sizing:border-box}html{scroll-padding-top:calc(70px + env(safe-area-inset-top,0px));scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--navy);z-index:30}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+h1,h2,h3{margin:0;line-height:1.2;letter-spacing:-.01em}.mu{color:var(--mute);font-size:13px}
+.wrap{width:min(1100px,100% - 32px);margin:0 auto}
+.lg{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
+.lg i{width:34px;height:34px;border-radius:9px;background:var(--btn);color:#fff;display:grid;place-items:center;font-style:normal;font-size:22px;font-weight:600;line-height:1}
+.nav{background:var(--navy);color:#fff;position:sticky;top:env(safe-area-inset-top,0px);z-index:20}
+.nav .wrap{display:flex;justify-content:space-between;align-items:center;height:62px}
+.nl{display:flex;gap:22px}.nl a{color:#c9d9e8;text-decoration:none;font-size:14px;font-weight:600}.nl a:hover{color:#fff}
+.hero{background:var(--navy);color:#fff;padding:54px 0 60px}
+.hero .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.hp{position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.16);box-shadow:0 12px 30px rgba(0,0,0,.35);line-height:0}.hp svg{width:100%;height:auto;display:block}
+.hp .pn{position:absolute;left:14px;bottom:14px;line-height:1.3;padding:12px 16px;background:rgba(12,45,74,.9);backdrop-filter:blur(4px)}.hp .pn b{font-size:34px;margin:4px 0 0}
+.hero h1{font-size:clamp(30px,4.6vw,46px);font-weight:700;letter-spacing:-.025em}
+.hero p{max-width:50ch;margin:16px 0 26px;color:#c3d4e4;font-size:17px}
+a.btn{display:inline-block;text-decoration:none;font-weight:600;font-size:15px;padding:12px 20px;border-radius:9px;background:var(--btn);color:#fff;margin:0 10px 10px 0}
+a.btn.o{background:transparent;border:1px solid rgba(255,255,255,.4)}
+.pn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:24px}
+.pn small{color:#b4c8dc;font-size:13px}.pn b{display:block;font-size:54px;line-height:1.1;margin:8px 0 2px;font-weight:700}.pn span{color:#c3d4e4;font-size:14px}
+.sec{padding:46px 0 6px}.sec h2{font-size:26px}.sub{color:var(--mute);margin:6px 0 20px;max-width:62ch}
+.tool{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}.tool input{flex:1 1 240px;max-width:360px}.tool select{width:auto;min-width:200px}
+.dg{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.dc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow)}
+.dc .hd{display:flex;gap:12px;align-items:center}.dc .hd b{font-size:16px}
+.av{width:46px;height:46px;border-radius:50%;background:var(--tint);color:var(--teal);display:grid;place-items:center;font-weight:700;font-size:18px;flex:none}
+.wk{display:flex;gap:4px;flex-wrap:wrap}.wk i{font-style:normal;font-size:11px;padding:3px 7px;border-radius:6px;background:var(--gbg);color:var(--mute)}.wk i.on{background:var(--tint);color:var(--teal);font-weight:700}
+.ck{flex-direction:row;align-items:center;gap:3px;font-weight:500;font-size:12px}
+.two{display:grid;grid-template-columns:minmax(0,400px) 1fr;gap:20px;align-items:start}
+.rl{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.rc{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);cursor:pointer}.rc:hover{border-color:var(--teal)}
+.rc b{display:block;font-size:14px}.rc .d{font-size:12px;color:var(--mute);line-height:1.4}
+.ic{width:42px;height:42px;border-radius:10px;background:var(--tint);color:var(--navy);display:grid;place-items:center;font-size:22px;line-height:1;flex:none;overflow:hidden}.ic.ph img{width:100%;height:100%;object-fit:cover}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ic{color:var(--ink)}}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.fc{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--btn);border-radius:10px;padding:16px 18px}.fc b{display:block;margin-bottom:4px}.fc span{font-size:13px;color:var(--mute)}
+.foot{background:var(--navy);color:#9fb4c9;text-align:center;padding:26px 16px;font-size:13px;margin-top:46px}
+.shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+aside{background:var(--navy);color:#c9d9e8;padding:18px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh;overflow:auto}
+aside .lg{color:#fff;font-size:16px;padding:0 8px 14px}
+aside a{padding:10px 12px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500}
+aside a:hover{background:rgba(255,255,255,.08)}aside a.on{background:var(--btn);color:#fff}aside a.out{margin-top:auto;border:1px solid rgba(255,255,255,.28)}
+main{padding:28px;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}.top h1{font-size:24px}
+.c{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px;box-shadow:var(--shadow)}.c h3{font-size:16px;margin-bottom:12px}
+.st{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.s{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:var(--shadow)}.s b{display:block;font-size:26px;color:var(--teal)}.s span{font-size:13px;color:var(--mute)}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;font-weight:600;color:var(--mute);padding:8px;border-bottom:1px solid var(--line)}
+td{padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+.f{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;align-items:end}
+label{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:600;color:var(--mute)}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--blue)}td input{min-width:70px}input[type=checkbox]{width:auto;min-width:0}
+button{font:600 14px inherit;font-family:inherit;border:0;border-radius:8px;padding:10px 16px;background:var(--btn);color:#fff;cursor:pointer}
+button.sm{padding:6px 11px;font-size:13px}button.g{background:var(--tint);color:var(--teal)}button.d{background:var(--bbg);color:var(--bad)}
+.b{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:600;background:var(--tint);color:var(--teal)}
+.b.booked,.b.pending,.b.unpaid,.b.soon{background:var(--wbg);color:var(--warn)}.b.done,.b.paid,.b.ready,.b.active,.b.now{background:var(--obg);color:var(--ok)}.b.cancelled,.b.low,.b.disabled,.b.leave{background:var(--bbg);color:var(--bad)}.b.off,.b.ended{background:var(--gbg);color:var(--mute)}
+#toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:99px;font-size:14px;display:none;z-index:40}
+@media(max-width:860px){.hero .wrap,.two{grid-template-columns:1fr}.g3{grid-template-columns:1fr 1fr}.shell{grid-template-columns:1fr}aside{position:static;height:auto;flex-direction:row;overflow-x:auto;align-items:center}aside .lg{display:none}aside a{white-space:nowrap}aside a.out{margin:0 0 0 auto}.st{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.g3,.rl{grid-template-columns:1fr}main{padding:16px}.nl{gap:14px}}
+
+.hp{min-height:360px;background:linear-gradient(135deg,#14436b 0%,#0c2d4a 55%,#0f5f5a 100%)}
+.hp::before{content:"+";position:absolute;right:8%;top:50%;transform:translateY(-50%);font:200 200px/1 'Segoe UI',system-ui,sans-serif;color:rgba(255,255,255,.08)}
+.hp .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.hp::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(to top,rgba(8,28,46,.8),rgba(8,28,46,0) 55%)}
+.hp .pn{z-index:3}
+.av{position:relative;overflow:hidden}.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%}
+.dc .av{width:68px;height:68px;font-size:26px;border:2px solid var(--line)}
+.td{display:flex;align-items:center;gap:10px}.td .av{width:38px;height:38px;font-size:15px}
+.pr{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}.pr:last-child{border:0}.pr .av{width:56px;height:56px;font-size:20px}.pr b{flex:1 1 160px}
+.pr .hero-t{width:96px;height:56px;border-radius:8px;object-fit:cover;background:var(--gbg)}
+.upb{display:inline-block;padding:8px 14px;border-radius:8px;background:var(--btn);color:#fff;font-size:13px;font-weight:600;cursor:pointer}
+.upb.o{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.cfab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:50%;padding:0;font-size:26px;line-height:1;box-shadow:0 8px 22px rgba(0,0,0,.3);z-index:35}
+.cfab em{position:absolute;top:-2px;right:-2px;min-width:20px;height:20px;border-radius:99px;background:var(--bad);color:#fff;font:700 11px/20px system-ui;font-style:normal;text-align:center;padding:0 5px}
+.cp{position:fixed;right:18px;bottom:calc(88px + env(safe-area-inset-bottom,0px));width:360px;max-width:calc(100vw - 24px);height:min(520px,calc(100vh - 140px));background:var(--card);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;box-shadow:0 14px 40px rgba(0,0,0,.3);overflow:hidden;z-index:35}
+.ch{background:var(--navy);color:#fff;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;gap:8px}.ch small{display:block;color:#b4c8dc;font-size:11px}
+.ct{display:flex;border-bottom:1px solid var(--line)}.ct button{flex:1;background:transparent;color:var(--mute);border-radius:0;padding:10px 6px;font-size:13px}.ct button.on{color:var(--teal);box-shadow:inset 0 -2px var(--teal)}
+.cm{flex:1;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--bg)}
+.mg{max-width:86%;padding:8px 11px;border-radius:12px;font-size:14px;line-height:1.45;background:var(--card);border:1px solid var(--line);align-self:flex-start;overflow-wrap:anywhere}
+.mg.me{align-self:flex-end;background:var(--btn);color:#fff;border-color:transparent}.mg small{display:block;font-size:11px;color:var(--mute);margin-bottom:2px}.mg.me small{color:#d6f1ee}
+.cn{font-size:12px;color:var(--mute);text-align:center;padding:2px 6px}
+.cf{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);background:var(--card)}.cf input{flex:1}
+.cq{display:flex;gap:6px;flex-wrap:wrap;padding:0 10px 8px;background:var(--card)}.cq button{background:var(--tint);color:var(--teal);font-size:12px;padding:5px 10px;border-radius:99px}
+@media(max-width:520px){.cp{right:12px;left:12px;width:auto;max-width:none}}
+</style>
+</head>
+<body>
+<div id="app"></div><div id="toast"></div><div id="chat"></div>
+<script>
+const today=new Date().toLocaleDateString('sv');
+const S={
+pts:[{id:1,name:'Ali Raza',phone:'0300-1111111',age:34,g:'M'},{id:2,name:'Fatima Noor',phone:'0301-2222222',age:28,g:'F'},{id:3,name:'Hamza Iqbal',phone:'0302-3333333',age:9,g:'M'}],
+docs:[{id:1,name:'Dr. Ayesha Khan',dept:'Cardiology',fee:2000,days:[1,2,3,4,5],from:'09:00',to:'14:00',leave:false},{id:2,name:'Dr. Usman Malik',dept:'General Medicine',fee:1000,days:[1,2,3,4,5,6],from:'10:00',to:'18:00',leave:false},{id:3,name:'Dr. Sana Raza',dept:'Gynecology',fee:1500,days:[1,3,5],from:'14:00',to:'20:00',leave:false},{id:4,name:'Dr. Imran Shah',dept:'Pediatrics',fee:1200,days:[1,2,3,4,5],from:'09:00',to:'15:00',leave:true}],
+apts:[{id:1,pid:1,did:1,date:today,status:'booked'},{id:2,pid:2,did:1,date:today,status:'checkedin'},{id:3,pid:3,did:2,date:today,status:'done',vit:{bp:'100/65',t:'99.1',p:'92'},dx:'Throat infection'}],
+meds:[{id:1,name:'Paracetamol 500mg',stock:120,min:30,price:5},{id:2,name:'Amoxicillin 500mg',stock:24,min:30,price:25},{id:3,name:'ORS Sachet',stock:60,min:20,price:15},{id:4,name:'Atorvastatin 20mg',stock:80,min:25,price:30}],
+rx:[{id:1,aid:3,mid:2,qty:10,dose:'1 capsule, 3 times daily',done:false}],
+labs:[{id:1,aid:3,test:'CBC',result:'',price:800}],
+inv:[{id:1,aid:3,paid:false,items:[{n:'Consultation',amt:1000},{n:'Lab: CBC',amt:800}]}],
+users:[{id:1,name:'Super Admin',role:'superadmin',on:true},{id:2,name:'Hina Tariq',role:'admin',on:true},{id:3,name:'Sadia Bibi',role:'reception',on:true},{id:4,name:'Nurse Amna',role:'nurse',on:true},{id:5,name:'Bilal Ahmed',role:'pharmacist',on:true},{id:6,name:'Kamran Ali',role:'lab',on:true},{id:7,name:'Zara Hussain',role:'accountant',on:true}],
+log:[],hosp:'CarePoint Medicare Hospital',prod:'MediCore HMS',photos:{}};
+let U=null,tab=0,sel=null,seq=100;
+const $=id=>document.getElementById(id),v=id=>$(id).value.trim();
+let P={};try{P=JSON.parse(localStorage.getItem('hms_photos')||'{}')}catch(e){}
+const savePh=()=>{try{localStorage.setItem('hms_photos',JSON.stringify(P))}catch(e){say('Photo saved for this session only (browser storage is full)')}};
+let DB=null,cloudOn=false,saveT=null;
+async function initCloud(){try{DB=await claude.use('db')}catch(e){}
+if(!DB){return}
+try{const ref=DB.doc('app/state');const snap=await ref.get();if(snap&&snap.exists){Object.assign(S,snap.data());cloudOn=true;log('Loaded shared data');render()}else{await ref.set(S);cloudOn=true}
+ref.onSnapshot(s=>{if(s.exists){Object.assign(S,s.data());render()}})}catch(e){console.error(e)}}
+function saveCloud(){if(!DB)return;clearTimeout(saveT);saveT=setTimeout(()=>{DB.doc('app/state').set(S).catch(e=>console.error(e))},700)}
+const phUrl=k=>(S.photos&&S.photos[k])?'/_blob/'+S.photos[k]:(P[k]||null);
+const dph=d=>phUrl('d'+d.id)||'doctors/'+d.id+'.jpg';
+const avt=d=>`<div class="av"><span>${d.name.replace('Dr. ','')[0]}</span><img src="${dph(d)}" alt="${d.name}" loading="lazy" onerror="this.remove()"></div>`;
+const ric=k=>phUrl('r'+k)?`<div class="ic ph"><img src="${phUrl('r'+k)}" alt="${R[k].n}" loading="lazy"></div>`:`<div class="ic" aria-hidden="true">${R[k].e}</div>`;
+const heroImg=()=>`<img class="ph" src="${phUrl('hero')||'hospital.jpg'}" alt="Hospital building" onerror="this.remove()">`;
+function upload(key,f){if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const mx=key=='hero'?1400:200,k=Math.min(1,mx/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);const kk=key=='hero'?'hero':(''+key).startsWith('r')?key:'d'+key;P[kk]=c.toDataURL('image/jpeg',.86);savePh();log('Updated photo');say('Photo saved');render();c.toBlob(async(blob)=>{if(!blob)return;try{const assets=await claude.use('assets');if(!assets)return;const res=await assets.upload(blob,{type:'image/jpeg'});S.photos=S.photos||{};S.photos[kk]=res.id;saveCloud();log('Photo shared with everyone');render()}catch(e){console.error(e)}},'image/jpeg',.86)};im.onerror=()=>say('Could not read that image');im.src=r.result};r.readAsDataURL(f)}
+const pn=i=>(S.pts.find(p=>p.id==i)||{}).name,dn=i=>(S.docs.find(d=>d.id==i)||{}).name,md=i=>S.meds.find(m=>m.id==i),ap=i=>S.apts.find(a=>a.id==i);
+const money=n=>'Rs '+n.toLocaleString(),tot=i=>i.items.reduce((s,x)=>s+x.amt,0);
+const bd=s=>`<span class="b ${s}">${s}</span>`,btn=(a,i,t,c='')=>`<button class="sm ${c}" data-a="${a}" data-i="${i}">${t}</button>`;
+const opt=(a,k)=>a.map(x=>`<option value="${x.id}">${x.name}${k?' — '+x[k]:''}</option>`).join('');
+const tbl=(h,r)=>`<div class="tw"><table><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr>${r.length?r.map(x=>`<tr>${x.map(c=>`<td>${c}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${h.length}" class="mu">Nothing here yet</td></tr>`}</table></div>`;
+const card=(t,b)=>`<div class="c"><h3>${t}</h3>${b}</div>`;
+const stats=a=>`<div class="st">${a.map(x=>`<div class="s"><b>${x[1]}</b><span>${x[0]}</span></div>`).join('')}</div>`;
+const inp=(id,l,x='')=>`<label>${l}<input id="${id}" ${x}></label>`;
+const revenue=()=>S.inv.filter(i=>i.paid).reduce((s,i)=>s+tot(i),0),pending=()=>S.inv.filter(i=>!i.paid).reduce((s,i)=>s+tot(i),0);
+
+let q='',dep='';
+const DN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],WO=[1,2,3,4,5,6,0];
+const tm=t=>{const[a,b]=t.split(':');return((+a)%12||12)+':'+b+(+a<12?' AM':' PM')};
+function avail(d){const n=new Date(),hm=n.toTimeString().slice(0,5);if(d.leave)return{k:'leave',t:'On leave today'};if(!d.days.includes(n.getDay()))return{k:'off',t:'Off duty today'};if(hm<d.from)return{k:'soon',t:'Starts at '+tm(d.from)};if(hm>d.to)return{k:'ended',t:'Shift ended'};return{k:'now',t:'Available now'}}
+const ab=d=>{const a=avail(d);return `<span class="b ${a.k}">${a.t}</span>`};
+const week=d=>`<div class="wk">${WO.map(k=>`<i class="${d.days.includes(k)?'on':''}">${DN[k]}</i>`).join('')}</div>`;
+const onDuty=(d,date)=>!(date==today&&d.leave)&&d.days.includes(new Date(date+'T00:00').getDay());
+function docList(){const r={now:0,soon:1,ended:2,off:3,leave:4};const L=S.docs.filter(d=>(!dep||d.dept==dep)&&(d.name+' '+d.dept).toLowerCase().includes(q.toLowerCase())).sort((a,b)=>r[avail(a).k]-r[avail(b).k]);
+return L.length?`<div class="dg">${L.map(d=>`<div class="dc"><div class="hd">${avt(d)}<div><b>${d.name}</b><div class="mu">${d.dept}</div></div></div><div>${ab(d)}</div><div class="mu">Duty hours: ${tm(d.from)} to ${tm(d.to)}<br>Consultation fee: ${money(d.fee)}</div>${week(d)}<button class="g" data-a="pick" data-i="patient">Sign in to book</button></div>`).join('')}</div>`:`<p class="mu">No doctors match your search. Clear the filter to see everyone.</p>`}
+function say(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(say.x);say.x=setTimeout(()=>t.style.display='none',2200)}
+function log(m){S.log.unshift({t:new Date().toLocaleTimeString(),u:U?R[U.role].n+' · '+nm():'system',m})}
+function addInv(aid,n,amt){let i=S.inv.find(x=>x.aid==aid);if(!i){i={id:++seq,aid,paid:false,items:[]};S.inv.push(i)}i.items.push({n,amt})}
+const nm=()=>U.role=='doctor'?dn(U.ref):U.role=='patient'?pn(U.ref):(S.users.find(u=>u.role==U.role)||{}).name;
+const low=()=>S.meds.filter(m=>m.stock<=m.min);
+const aptRows=(list,acts)=>tbl(['#','Patient','Doctor','Date','Status',''],list.map(a=>[a.id,pn(a.pid),dn(a.did),a.date,bd(a.status),acts?acts(a):'']));
+const bookForm=(me)=>card('Book an appointment',`<div class="f">${me?'':`<label>Patient<select id="bp">${opt(S.pts)}</select></label>`}<label>Doctor<select id="bd">${opt(S.docs,'dept')}</select></label><label>Date<input id="bt" type="date" value="${today}"></label><button data-a="${me?'bookme':'book'}">Book</button></div>`);
+const userTbl=()=>tbl(['Name','Role','Status',''],S.users.map(u=>[u.name,R[u.role].n,bd(u.on?'active':'disabled'),u.id==1?'':btn('tgl',u.id,u.on?'Disable':'Enable',u.on?'d':'g')]));
+const invTbl=(list,pay)=>tbl(['Invoice','Patient','Items','Total','Status',''],list.map(i=>[i.id,pn(ap(i.aid).pid),i.items.map(x=>x.n).join(', '),money(tot(i)),bd(i.paid?'paid':'unpaid'),pay&&!i.paid?btn('pay',i.id,'Record payment'):'']));
+const R={
+superadmin:{n:'Super Admin',e:'🛡️',d:'System setup, all users and the audit trail',t:[
+['Overview',()=>stats([['Staff accounts',S.users.length],['Patients',S.pts.length],['Appointments',S.apts.length],['Revenue collected',money(revenue())]])+card('System',`<p class="mu">CarePoint Medicare Hospital · single-hospital OPD deployment · 9 role-based portals · every action is written to the audit log.</p>`)],
+['Users & roles',()=>card('Add staff account',`<div class="f">${inp('un','Full name')}<label>Role<select id="ur">${Object.keys(R).filter(r=>!['superadmin','patient','doctor'].includes(r)).map(r=>`<option value="${r}">${R[r].n}</option>`).join('')}</select></label><button data-a="adduser">Add user</button></div>`)+card('All staff',userTbl())],
+['Hospital settings',()=>card('Hospital branding',`<div class="f">${inp('hn','Hospital name','value="'+S.hosp+'"')}<button data-a="sethosp">Save</button></div><p class="mu">Rename the system for each hospital you deliver it to.</p>`)],
+['Audit log',()=>card('Audit log',tbl(['Time','User','Action'],S.log.map(l=>[l.t,l.u,l.m])))]]},
+admin:{n:'Hospital Admin',e:'🏥',d:'Operations, doctors, stock and reports',t:[
+['Dashboard',()=>stats([['Appointments',S.apts.length],['Completed',S.apts.filter(a=>a.status=='done').length],['Low-stock medicines',low().length],['Pending bills',money(pending())]])+card('Medicines running low',tbl(['Medicine','Stock','Minimum'],low().map(m=>[m.name,bd('low')+' '+m.stock,m.min])))],
+['Doctors',()=>card('Add doctor',`<div class="f">${inp('dn','Name')}${inp('dd','Department')}${inp('df','Fee (Rs)','type="number"')}<button data-a="adddoc">Add doctor</button></div>`)+card('Medical staff',tbl(['Doctor','Department','Fee','Today'],S.docs.map(d=>[`<div class="td">${avt(d)}<span>${d.name}</span></div>`,d.dept,money(d.fee),ab(d)])))],
+['Photos',()=>card('Hospital photo',`<p class="mu" style="margin:0 0 10px">Shown on the public home page. Use a real, bright, landscape photo of your building or reception.</p><div class="pr"><img class="hero-t" src="${phUrl('hero')||'hospital.jpg'}" alt="" onerror="this.style.visibility='hidden'"><b>Home page photo</b><label class="upb">Upload<input type="file" accept="image/*" data-up="hero" hidden></label>${phUrl('hero')?'<button class="g" data-a="rmph" data-i="hero">Remove</button>':''}</div>`)+card('Doctor photos',`<p class="mu" style="margin:0 0 10px">Use a clear, front-facing portrait with a plain background. Photos are cropped to a circle automatically.</p>`+S.docs.map(d=>`<div class="pr">${avt(d)}<b>${d.name}<div class="mu">${d.dept}</div></b><label class="upb">${phUrl('d'+d.id)?'Change':'Upload'}<input type="file" accept="image/*" data-up="${d.id}" hidden></label>${phUrl('d'+d.id)?`<button class="g" data-a="rmph" data-i="${d.id}">Remove</button>`:''}</div>`).join(''))+card('Sign-in icons',`<p class="mu" style="margin:0 0 10px">Replace an emoji icon on the sign-in page with a photo for that role.</p>`+Object.keys(R).map(k=>`<div class="pr">${ric(k)}<b>${R[k].n}</b><label class="upb">${phUrl('r'+k)?'Change':'Upload'}<input type="file" accept="image/*" data-up="r${k}" hidden></label>${phUrl('r'+k)?`<button class="g" data-a="rmph" data-i="r${k}">Remove</button>`:''}</div>`).join(''))],
+['Duty roster',()=>card('Doctor duty roster',`<p class="mu" style="margin:0 0 10px">Patients see this on the public page without signing in. Save each row after changing it.</p>`+tbl(['Doctor','Days on duty','From','To','On leave today',''],S.docs.map(d=>[d.name,`<div class="wk">${WO.map(k=>`<label class="ck"><input type="checkbox" id="dy${d.id}_${k}" ${d.days.includes(k)?'checked':''}>${DN[k]}</label>`).join('')}</div>`,`<input id="ds${d.id}" type="time" value="${d.from}">`,`<input id="de${d.id}" type="time" value="${d.to}">`,`<input type="checkbox" id="dl${d.id}" ${d.leave?'checked':''} aria-label="On leave today">`,btn('saveduty',d.id,'Save')])))],
+['Reports',()=>stats([['Revenue collected',money(revenue())],['Pending',money(pending())],['Patients',S.pts.length],['Lab orders',S.labs.length]])+card('Workload by doctor',tbl(['Doctor','Appointments','Completed'],S.docs.map(d=>{const a=S.apts.filter(x=>x.did==d.id);return[d.name,a.length,a.filter(x=>x.status=='done').length]})))]]},
+reception:{n:'Receptionist',e:'🛎️',d:'Register patients, book and check in',t:[
+['Register patient',()=>card('New patient',`<div class="f">${inp('rn','Full name')}${inp('rp','Phone')}${inp('ra','Age','type="number"')}<label>Gender<select id="rg"><option>F</option><option>M</option></select></label><button data-a="regpt">Register</button></div>`)+card('Patients',tbl(['ID','Name','Phone','Age'],S.pts.map(p=>[p.id,p.name,p.phone,p.age])))],
+['Book appointment',()=>bookForm(0)],
+['Today’s queue',()=>card('All appointments',aptRows(S.apts,a=>a.status=='booked'?btn('ci',a.id,'Check in')+' '+btn('cx',a.id,'Cancel','d'):''))]]},
+doctor:{n:'Doctor',e:'🩺',d:'Consultations, prescriptions and lab orders',t:[
+['Consultation',()=>{const mine=S.apts.filter(a=>a.did==U.ref);return card('My queue',aptRows(mine,a=>a.status=='checkedin'?btn('open',a.id,'Open'):''))+(sel&&ap(sel)&&ap(sel).status=='checkedin'?consult():'')}],
+['My duty',()=>{const d=S.docs.find(x=>x.id==U.ref);return card('My duty schedule',`<p>${ab(d)}</p>${week(d)}<p class="mu">Duty hours: ${tm(d.from)} to ${tm(d.to)}</p><button class="${d.leave?'g':'d'}" data-a="myleave">${d.leave?'Return from leave today':'Mark me on leave today'}</button>`)}],
+['My patients',()=>card('Completed visits',tbl(['Patient','Date','Diagnosis'],S.apts.filter(a=>a.did==U.ref&&a.status=='done').map(a=>[pn(a.pid),a.date,a.dx||'—'])))]]},
+nurse:{n:'Nurse',e:'💉',d:'Record vitals for checked-in patients',t:[
+['Vitals',()=>card('Checked-in patients',tbl(['Patient','Doctor','BP','Temp °F','Pulse',''],S.apts.filter(a=>a.status=='checkedin').map(a=>[pn(a.pid),dn(a.did),a.vit?a.vit.bp:`<input id="b${a.id}" placeholder="120/80">`,a.vit?a.vit.t:`<input id="t${a.id}" placeholder="98.6">`,a.vit?a.vit.p:`<input id="p${a.id}" placeholder="72">`,a.vit?bd('done'):btn('vit',a.id,'Save')])))]]},
+pharmacist:{n:'Pharmacist',e:'💊',d:'Dispense prescriptions and manage stock',t:[
+['Prescriptions',()=>card('Pending prescriptions',tbl(['Patient','Medicine','Qty','Directions','Stock',''],S.rx.filter(r=>!r.done).map(r=>[pn(ap(r.aid).pid),md(r.mid).name,r.qty,r.dose,md(r.mid).stock,btn('disp',r.id,'Dispense')])))],
+['Inventory',()=>card('Medicine stock',tbl(['Medicine','Stock','Min','Price',''],S.meds.map(m=>[m.name,m.stock<=m.min?bd('low')+' '+m.stock:m.stock,m.min,money(m.price),btn('rs',m.id,'+50 stock','g')])))]]},
+lab:{n:'Lab Technician',e:'🧪',d:'Process lab orders and enter results',t:[
+['Lab orders',()=>card('Pending tests',tbl(['Patient','Test','Result',''],S.labs.filter(l=>!l.result).map(l=>[pn(ap(l.aid).pid),l.test,`<input id="r${l.id}" placeholder="Enter result">`,btn('res',l.id,'Save result')])))+card('Completed',tbl(['Patient','Test','Result'],S.labs.filter(l=>l.result).map(l=>[pn(ap(l.aid).pid),l.test,l.result])))]]},
+accountant:{n:'Accountant',e:'💰',d:'Invoices, payments and revenue',t:[
+['Invoices',()=>stats([['Collected',money(revenue())],['Outstanding',money(pending())],['Invoices',S.inv.length],['Unpaid',S.inv.filter(i=>!i.paid).length]])+card('All invoices',invTbl(S.inv,1))]]},
+patient:{n:'Patient',e:'🧑',d:'Your appointments, records and bills',t:[
+['Appointments',()=>bookForm(1)+card('My appointments',aptRows(S.apts.filter(a=>a.pid==U.ref)))],
+['Medical records',()=>{const mine=S.apts.filter(a=>a.pid==U.ref);return card('Visits & diagnosis',tbl(['Date','Doctor','Diagnosis'],mine.filter(a=>a.dx).map(a=>[a.date,dn(a.did),a.dx])))+card('Prescriptions',tbl(['Medicine','Qty','Directions','Status'],S.rx.filter(r=>mine.some(a=>a.id==r.aid)).map(r=>[md(r.mid).name,r.qty,r.dose,bd(r.done?'ready':'pending')])))+card('Lab results',tbl(['Test','Result'],S.labs.filter(l=>mine.some(a=>a.id==l.aid)).map(l=>[l.test,l.result||bd('pending')])))}],
+['Bills',()=>card('My bills',invTbl(S.inv.filter(i=>ap(i.aid).pid==U.ref),0))]]}
+};
+function consult(){const a=ap(sel);return card('Consultation · '+pn(a.pid),`<p class="mu">Vitals: ${a.vit?`BP ${a.vit.bp} · Temp ${a.vit.t}°F · Pulse ${a.vit.p}`:'not recorded yet'}</p>
+<label>Diagnosis / notes<textarea id="dx" rows="3">${a.dx||''}</textarea></label>
+<h3 style="margin:14px 0 8px;font-size:14px">Prescription</h3>${tbl(['Medicine','Qty','Directions'],S.rx.filter(r=>r.aid==sel).map(r=>[md(r.mid).name,r.qty,r.dose]))}
+<div class="f" style="margin-top:10px"><label>Medicine<select id="xm">${opt(S.meds)}</select></label>${inp('xq','Qty','type="number" value="10"')}${inp('xd','Directions','placeholder="1 tablet, twice daily"')}<button class="g" data-a="addrx">Add</button></div>
+<h3 style="margin:14px 0 8px;font-size:14px">Lab order</h3><div class="f">${inp('xl','Test name','placeholder="e.g. CBC"')}<button class="g" data-a="addlab">Order test</button></div>
+<p>${S.labs.filter(l=>l.aid==sel).map(l=>bd(l.test)).join(' ')}</p><button data-a="finish">Complete visit &amp; generate invoice</button>`)}
+const H={superadmin:'b1740aaa6410ee0421c088c38e990f999288b54f07a55defb2d4aeb8a26d6be3',admin:'b1740aaa6410ee0421c088c38e990f999288b54f07a55defb2d4aeb8a26d6be3',reception:'b1740aaa6410ee0421c088c38e990f999288b54f07a55defb2d4aeb8a26d6be3',doctor:'b1740aaa6410ee0421c088c38e990f999288b54f07a55defb2d4aeb8a26d6be3',nurse:'b1740aaa6410ee0421c088c38e990f999288b54f07a55defb2d4aeb8a26d6be3',pharmacist:'b1740aaa6410ee0421c088c38e990f999288b54f07a55defb2d4aeb8a26d6be3',lab:'b1740aaa6410ee0421c088c38e990f999288b54f07a55defb2d4aeb8a26d6be3',accountant:'b1740aaa6410ee0421c088c38e990f999288b54f07a55defb2d4aeb8a26d6be3',patient:'b1740aaa6410ee0421c088c38e990f999288b54f07a55defb2d4aeb8a26d6be3'};
+async function sha(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+async function doLogin(){const u=v('lu').toLowerCase(),p=$('lp').value;let ok=false;try{ok=!!H[u]&&(await sha(p))===H[u]}catch(e){console.error(e)}
+if(!ok){$('lerr').textContent='Wrong username or password.';return}
+const su=S.users.find(x=>x.role==u);if(su&&!su.on){$('lerr').textContent='This account is disabled.';return}
+U={role:u,ref:1};tab=0;sel=null;log('Signed in');render()}
+document.addEventListener('keydown',e=>{if(e.key=='Enter'&&!U&&e.target.id=='lp')doLogin()});
+function login(){const deps=[...new Set(S.docs.map(d=>d.dept))],on=S.docs.filter(d=>['now','soon','ended'].includes(avail(d).k)).length,dt=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+return `<nav class="nav"><div class="wrap"><div class="lg"><i>+</i>${S.hosp}</div><div class="nl"><a href="#docs">Our doctors</a><a href="#sg">Sign in</a></div></div></nav>
+<header class="hero"><div class="wrap"><div><h1>Care you can plan around</h1><p>See which doctors are on duty today and when each one sees patients. No account needed. Sign in only to book a visit or open your own records.</p><a class="btn" href="#docs">See doctors on duty</a><a class="btn o" href="#sg">Sign in</a></div>
+<div class="hp">${heroImg()}<div class="pn"><small>${dt}</small><b>${on}</b><span>of ${S.docs.length} doctors on duty today</span></div></div></div></header>
+<section id="docs" class="wrap sec"><h2>Our doctors and today’s availability</h2><p class="sub">Open to everyone. Availability follows each doctor’s duty roster and updates when the hospital changes it.</p>
+<div class="tool"><input id="dq" type="search" placeholder="Search by doctor or department" value="${q}" aria-label="Search doctors"><select id="dp" aria-label="Department"><option value="">All departments</option>${deps.map(x=>`<option ${x==dep?'selected':''}>${x}</option>`).join('')}</select></div><div id="dl">${docList()}</div></section>
+<section id="sg" class="wrap sec"><h2>Sign in</h2><p class="sub">Patient records, prescriptions, lab results and bills are private. Each portal opens only with its own username and password.</p>
+<div class="two"><div class="c" style="margin:0"><h3>Account sign in</h3><div class="f" style="grid-template-columns:1fr">${inp('lu','Username','autocomplete="username" autocapitalize="none"')}${inp('lp','Password','type="password" autocomplete="current-password"')}<button data-a="signin">Sign in</button></div><p id="lerr" class="mu" style="color:var(--bad);margin:10px 0 0" role="alert"></p><p class="mu" style="margin:10px 0 0">Select a portal on the right to fill in its username.</p></div>
+<div class="rl">${Object.keys(R).map(k=>`<div class="rc" data-a="pick" data-i="${k}">${ric(k)}<div><b>${R[k].n}</b><span class="d">${R[k].d}</span></div></div>`).join('')}</div></div></section>
+<section class="wrap sec"><h2>One system for the whole hospital</h2><p class="sub">Nine role-based portals work from one live record, so nothing is typed twice.</p>
+<div class="g3"><div class="fc"><b>Registration and appointments</b><span>Patient records, booking, check-in and a live queue.</span></div><div class="fc"><b>Consultations</b><span>Vitals, diagnosis, prescriptions and lab orders on one screen.</span></div><div class="fc"><b>Doctor duty roster</b><span>Shifts and leave managed once, shown to patients in real time.</span></div><div class="fc"><b>Pharmacy and stock</b><span>Dispensing, inventory and low-stock alerts.</span></div><div class="fc"><b>Laboratory</b><span>Test orders and results that reach the doctor and the patient.</span></div><div class="fc"><b>Billing and audit</b><span>Invoices built from every service used, with a full activity log.</span></div></div></section>
+<footer class="foot">${S.prod} · Hospital Management System for ${S.hosp}<br>Demo build: sign-in is checked in the browser only. Data lives in this browser session and resets on refresh.</footer>`}
+function render(){
+if(!U){$('app').innerHTML=login();return}
+const r=R[U.role];
+const who=U.role=='doctor'?`<label>Acting as<select id="ref" data-ch="1">${S.docs.map(d=>`<option value="${d.id}" ${d.id==U.ref?'selected':''}>${d.name}</option>`).join('')}</select></label>`:U.role=='patient'?`<label>Acting as<select id="ref" data-ch="1">${S.pts.map(d=>`<option value="${d.id}" ${d.id==U.ref?'selected':''}>${d.name}</option>`).join('')}</select></label>`:'';
+$('app').innerHTML=`<div class="shell"><aside><div class="lg"><i>+</i>${S.hosp}</div>${r.t.map((t,i)=>`<a class="${i==tab?'on':''}" data-a="tab" data-i="${i}">${t[0]}</a>`).join('')}<a class="out" data-a="out">Log out</a></aside><main><div class="top"><div><h1>${r.n} portal</h1><span class="mu">Signed in as ${nm()}</span></div>${who}</div>${r.t[tab][1]()}</main></div>`}
+document.addEventListener('input',e=>{if(e.target.id=='dq'){q=e.target.value;$('dl').innerHTML=docList();return}if(e.target.id=='dx'&&sel)ap(sel).dx=e.target.value});
+document.addEventListener('change',e=>{if(e.target.dataset.up){upload(e.target.dataset.up,e.target.files[0]);return}if(e.target.id=='dp'){dep=e.target.value;$('dl').innerHTML=docList();return}if(e.target.dataset.ch){U.ref=+e.target.value;sel=null;render()}});
+document.addEventListener('click',e=>{
+const el=e.target.closest('[data-a]');if(!el)return;const a=el.dataset.a,i=+el.dataset.i||el.dataset.i;
+try{switch(a){
+case'pick':$('lu').value=i;$('sg').scrollIntoView({block:'start'});$('lp').focus({preventScroll:true});return;
+case'signin':doLogin();return;
+case'out':log('Signed out');U=null;break;
+case'tab':tab=i;sel=null;break;
+case'regpt':if(!v('rn'))return say('Enter a name');S.pts.push({id:++seq,name:v('rn'),phone:v('rp'),age:+v('ra')||0,g:v('rg')});log('Registered patient '+v('rn'));say('Patient registered');break;
+case'book':case'bookme':{const pid=a=='bookme'?U.ref:+v('bp');const dr=S.docs.find(x=>x.id==+v('bd')),dt=v('bt')||today;if(!onDuty(dr,dt))return say(dr.name+' is not on duty on that date');S.apts.push({id:++seq,pid,did:dr.id,date:dt,status:'booked'});log('Booked appointment for '+pn(pid));say('Appointment booked');break}
+case'ci':ap(i).status='checkedin';log('Checked in '+pn(ap(i).pid));say('Patient checked in');break;
+case'cx':ap(i).status='cancelled';log('Cancelled appointment #'+i);break;
+case'vit':if(!v('b'+i)||!v('t'+i)||!v('p'+i))return say('Fill all vitals');ap(i).vit={bp:v('b'+i),t:v('t'+i),p:v('p'+i)};log('Recorded vitals for '+pn(ap(i).pid));say('Vitals saved');break;
+case'open':sel=i;break;
+case'addrx':if(!v('xd'))return say('Add directions');S.rx.push({id:++seq,aid:sel,mid:+v('xm'),qty:+v('xq')||1,dose:v('xd'),done:false});log('Prescribed '+md(+v('xm')).name);break;
+case'addlab':if(!v('xl'))return say('Enter a test name');S.labs.push({id:++seq,aid:sel,test:v('xl'),result:'',price:800});addInv(sel,'Lab: '+v('xl'),800);log('Ordered lab test '+v('xl'));break;
+case'finish':{const x=ap(sel);x.status='done';addInv(sel,'Consultation',S.docs.find(d=>d.id==x.did).fee);log('Completed visit for '+pn(x.pid));sel=null;say('Visit completed, invoice created');break}
+case'disp':{const r=S.rx.find(x=>x.id==i),m=md(r.mid);if(m.stock<r.qty)return say('Not enough stock');m.stock-=r.qty;r.done=true;addInv(r.aid,m.name+' × '+r.qty,m.price*r.qty);log('Dispensed '+m.name);say('Dispensed');break}
+case'rs':md(i).stock+=50;log('Restocked '+md(i).name);break;
+case'res':if(!v('r'+i))return say('Enter a result');S.labs.find(x=>x.id==i).result=v('r'+i);log('Entered lab result');say('Result saved');break;
+case'pay':S.inv.find(x=>x.id==i).paid=true;log('Recorded payment for invoice #'+i);say('Payment recorded');break;
+case'adduser':if(!v('un'))return say('Enter a name');S.users.push({id:++seq,name:v('un'),role:v('ur'),on:true});log('Added user '+v('un'));say('User added');break;
+case'sethosp':if(v('hn')){S.hosp=v('hn');log('Renamed hospital');say('Saved')}break;
+case'saveduty':{const d=S.docs.find(x=>x.id==i);d.days=WO.filter(k=>$('dy'+i+'_'+k).checked);d.from=v('ds'+i)||d.from;d.to=v('de'+i)||d.to;d.leave=$('dl'+i).checked;log('Updated duty roster for '+d.name);say('Roster saved');break}
+case'myleave':{const d=S.docs.find(x=>x.id==U.ref);d.leave=!d.leave;log((d.leave?'Marked leave for ':'Returned from leave: ')+d.name);break}
+case'tgl':{const u=S.users.find(x=>x.id==i);u.on=!u.on;log((u.on?'Enabled ':'Disabled ')+u.name);break}
+case'rmph':{const kk=i=='hero'?'hero':(''+i).startsWith('r')?i:'d'+i;delete P[kk];savePh();if(S.photos&&S.photos[kk]){delete S.photos[kk];saveCloud()}log('Removed photo');break}
+case'adddoc':if(!v('dn'))return say('Enter a name');S.docs.push({id:++seq,name:v('dn'),dept:v('dd')||'General',fee:+v('df')||1000,days:[1,2,3,4,5],from:'09:00',to:'17:00',leave:false});log('Added doctor '+v('dn'));say('Doctor added');break;
+}}catch(err){console.error(err)}
+render()});
+/* ===== Chat: AI assistant + real-time live chat ===== */
+// To use a real AI model, set AI_URL to YOUR server endpoint that accepts {messages, doctors} and returns {reply}.
+// Never put an API key in this file. Leave empty to use the built-in assistant.
+const AI_URL='';
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let cOpen=false,cTab='ai',cUnread=0,cLive=[],cBusy=false,cAI=[{r:'bot',t:'Hello! I can help with doctor timings, fees, departments and booking. What would you like to know?'}];
+const CID=Math.random().toString(36).slice(2);
+let CH=null;try{CH=typeof BroadcastChannel!='undefined'?new BroadcastChannel('hms-live-chat'):null}catch(e){}
+if(CH)CH.onmessage=e=>{const m=e.data;if(!m||!m.id||!U)return;cLive.push(m);if(!(cOpen&&cTab=='live'))cUnread++;chatUpd()};
+const wdays=d=>WO.filter(k=>d.days.includes(k)).map(k=>DN[k]).join(', ');
+const dinfo=d=>d.name+' ('+d.dept+'): '+avail(d).t.toLowerCase()+'. Hours '+tm(d.from)+' to '+tm(d.to)+', '+wdays(d)+'. Fee '+money(d.fee)+'.';
+function localAI(q){const t=q.toLowerCase(),has=(...w)=>w.some(x=>t.includes(x));
+if(has('emergency','chest pain','bleeding','unconscious','breathe','accident','heart attack','stroke','poison'))return 'This sounds urgent. Please go to the nearest emergency department or call your local emergency number now (1122 in Pakistan). I cannot assess symptoms here.';
+if(U&&U.role=='patient'&&has('my appointment','my bill','my visit')){const a=S.apts.filter(x=>x.pid==U.ref),b=S.inv.filter(i=>ap(i.aid)&&ap(i.aid).pid==U.ref&&!i.paid);
+return (a.length?'Your appointments:\n'+a.map(x=>dn(x.did)+' on '+x.date+' ('+x.status+')').join('\n'):'You have no appointments yet.')+'\n'+(b.length?'Unpaid bills: '+money(b.reduce((s,i)=>s+tot(i),0)):'You have no unpaid bills.')}
+const hit=S.docs.filter(d=>t.includes(d.dept.toLowerCase())||(d.name+' '+d.dept).toLowerCase().split(/[\s.]+/).some(w=>w.length>3&&!['general','medicine'].includes(w)&&t.includes(w)));
+if(hit.length&&!has('fee','cost','price','charge'))return hit.slice(0,3).map(dinfo).join('\n\n');
+if(has('fee','cost','price','charge'))return (hit.length?hit:S.docs).map(d=>d.name+' ('+d.dept+'): '+money(d.fee)).join('\n');
+if(has('on duty','available','today','now','open','timing','hours')){const L=S.docs.filter(d=>['now','soon'].includes(avail(d).k));return L.length?'Doctors available today:\n'+L.map(d=>d.name+' ('+d.dept+') · '+avail(d).t).join('\n'):'No doctor is on duty right now. Please check the roster on the home page for the next duty day.'}
+if(has('book','appointment','visit','schedule'))return 'To book: sign in to the Patient portal, open Appointments, choose a doctor and date, then press Book. Booking works only on the doctor’s duty days. Reception can also book for you.';
+if(has('department','specialist','special','which doctor'))return 'Departments: '+[...new Set(S.docs.map(d=>d.dept))].join(', ')+'.';
+if(has('lab','report','test','prescription','medicine','record'))return 'Lab results, prescriptions and bills are private. Sign in to the Patient portal to see yours.';
+if(/\b(hi|hello|hey|salam|assalam)/.test(t))return 'Hello! Ask me about doctor timings, fees, departments or how to book.';
+return 'I can answer questions about: doctors on duty today, timings, fees, departments and booking. Try “Who is available today?”'}
+async function aiReply(t){if(AI_URL){try{const h=cAI.slice(Math.max(0,cAI.findIndex(x=>x.r=='me'))).map(x=>({role:x.r=='me'?'user':'assistant',content:x.t}));
+const r=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:h,hospital:S.hosp,doctors:S.docs.map(d=>({name:d.name,dept:d.dept,fee:d.fee,from:d.from,to:d.to,status:avail(d).t}))})});
+const j=await r.json();if(j&&j.reply)return j.reply}catch(e){console.error(e)}}
+return localAI(t)}
+function chatMsgs(){if(cTab=='ai')return cAI.map(m=>`<div class="mg ${m.r=='me'?'me':''}">${esc(m.t).replace(/\n/g,'<br>')}</div>`).join('')+(cBusy?'<div class="cn">Assistant is typing…</div>':'');
+if(!U)return '<div class="cn">Sign in to join the live chat with hospital staff and patients.</div>';
+return '<div class="cn">Real-time chat between everyone signed in on this device (any tab or window).</div>'+cLive.map(m=>`<div class="mg ${m.from==CID?'me':''}"><small>${esc(m.who)} · ${esc(m.time)}</small>${esc(m.t).replace(/\n/g,'<br>')}</div>`).join('')}
+function chatUpd(){const b=document.querySelector('.cfab em');if(b){b.textContent=cUnread;b.style.display=cUnread?'block':'none'}const m=$('cm');if(m){m.innerHTML=chatMsgs();m.scrollTop=m.scrollHeight}}
+function chatRender(){const d=$('ci')?$('ci').value:'',f=document.activeElement&&document.activeElement.id=='ci';
+const can=cTab=='ai'||U;
+$('chat').innerHTML=`<button class="cfab" data-c="toggle" aria-label="${cOpen?'Close chat':'Open chat'}">${cOpen?'✕':'💬'}<em style="display:${cUnread&&!cOpen?'block':'none'}">${cUnread}</em></button>`+(cOpen?`<div class="cp" role="dialog" aria-label="Chat"><div class="ch"><div><b>${esc(S.hosp)}</b><small>Chat</small></div><button class="sm g" data-c="toggle" aria-label="Close">✕</button></div>
+<div class="ct"><button class="${cTab=='ai'?'on':''}" data-c="tab" data-t="ai">🤖 AI assistant</button><button class="${cTab=='live'?'on':''}" data-c="tab" data-t="live">👥 Live chat</button></div>
+<div class="cm" id="cm" aria-live="polite"></div>
+${cTab=='ai'?'<div class="cq"><button data-c="q" data-t="Who is available today?">Available today</button><button data-c="q" data-t="What are the consultation fees?">Fees</button><button data-c="q" data-t="How do I book an appointment?">Book</button></div>':''}
+${can?'<div class="cf"><input id="ci" placeholder="'+(cTab=='ai'?'Ask a question…':'Message everyone…')+'" autocomplete="off" aria-label="Message"><button data-c="send">Send</button></div>':''}</div>`:'');
+if(cOpen){if($('ci')){$('ci').value=d;if(f)$('ci').focus()}chatUpd()}}
+async function csend(txt){const i=$('ci'),t=(txt||(i?i.value:'')).trim();if(!t)return;if(i)i.value='';
+if(cTab=='live'){if(!U)return;const m={id:CID+Date.now(),who:R[U.role].n+' · '+nm(),time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),t,from:CID};cLive.push(m);if(CH)CH.postMessage(m);chatUpd();return}
+cAI.push({r:'me',t});cBusy=true;chatUpd();const r=await aiReply(t);cBusy=false;cAI.push({r:'bot',t:r});chatUpd()}
+$('chat').addEventListener('click',e=>{e.stopPropagation();const el=e.target.closest('[data-c]');if(!el)return;const a=el.dataset.c;
+if(a=='toggle'){cOpen=!cOpen;if(cOpen&&cTab=='live')cUnread=0;chatRender();if($('ci'))$('ci').focus()}
+else if(a=='tab'){cTab=el.dataset.t;if(cTab=='live')cUnread=0;chatRender();if($('ci'))$('ci').focus()}
+else if(a=='send')csend();else if(a=='q')csend(el.dataset.t)});
+$('chat').addEventListener('keydown',e=>{e.stopPropagation();if(e.key=='Enter'&&e.target.id=='ci')csend()});
+{const _r=render;render=function(){_r();chatRender()}}
+
+setInterval(()=>{if(!U&&$('dl'))$('dl').innerHTML=docList()},60000);
+render();
+</script>
+</body>
+</html>
